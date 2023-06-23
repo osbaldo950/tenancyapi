@@ -51,13 +51,11 @@ class AuthController extends ApiController
             $client->createPasswordGrantClient(null, 'tenant client',env('APP_TENANT_URL'));
             $client->createPersonalAccessClient(null, 'tenant client', env('APP_TENANT_URL'));
 
-            //crear roles tenant
-            // $superAdminRole = Role::create(['name' => 'Super admin']);
-            // $employeeRole = Role::create(['name' => 'Empleados']);
-            // $adminRole = Role::create(['name' => 'Admin']);
-            // //asignar permisos a super admin
-            // $superAdminRole->givePermissionTo(Permission::all());
-            // $user_tenant->syncRoles([$superAdminRole]);
+            // crear roles tenant
+            $superAdminRole = Role::create(['name' => 'Super admin']);
+            //asignar permisos a super admin
+            $superAdminRole->givePermissionTo(Permission::all());
+            $user_tenant->syncRoles([$superAdminRole]);
 
         });
 

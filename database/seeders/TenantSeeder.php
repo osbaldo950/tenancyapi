@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Database\Seeders\Tenant\PermissionsSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,8 @@ class TenantSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $this->call([
+            PermissionsSeeder::class
+        ]);
     }
 }

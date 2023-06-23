@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\v1\Tenant\AreaController;
 use App\Http\Controllers\v1\Tenant\AuthController;
-use App\Http\Controllers\v1\Tenant\BranchController;
 use App\Http\Controllers\v1\Tenant\CompanyController;
-use App\Http\Controllers\v1\Tenant\RegionController;
+use App\Http\Controllers\v1\Tenant\RoleController;
+use App\Http\Controllers\v1\Tenant\RoleUserController;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
@@ -37,9 +36,9 @@ Route::middleware([
         Route::post('refresh', [AuthController::class, 'refresh']);
 
         Route::resource('companies', CompanyController::class);
-        Route::resource('branches', BranchController::class);
-        Route::resource('areas', AreaController::class);
-        Route::resource('regions', RegionController::class);
+
+        Route::apiResource('roles', RoleController::class);
+        Route::apiResource('roles-user', RoleUserController::class);
     });
 
 });
