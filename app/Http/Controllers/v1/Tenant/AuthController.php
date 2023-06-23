@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\v1\Tenant;
 
+use App\Http\Controllers\ApiController;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Tenant\LoginRequest;
 use App\Http\Requests\Tenant\RegisterRequest;
+use App\Models\Landlord\Tenant;
 use App\Models\Tenant\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password;
 
-class AuthController extends Controller
+class AuthController extends ApiController
 {
 
 //    public function __construct()
@@ -23,27 +24,37 @@ class AuthController extends Controller
                     'email' => $request->email,
                     'password' => Hash::make($request->password),
                 ]);
-                
-        return response()->json(['user' => $user], 200);
+
+        $token = $user->createToken('Token')->accessToken;
+        return $this->successResponse(['user' => $user, 'token' => $token]);
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $credentials = [
-            'email' => $request->email,
-            'password' => $request->password
-        ];
+        $subdomain = request()->getHost();
+        $subdomain = explode('.', $subdomain);
+        $subdomain = $subdomain[0];
 
-        if(auth()->attempt($credentials)){
+        $exist_tenant = Tenant::where('tenancy_domain', $subdomain)->first();
 
-            $token = auth()->user()->createToken('Token')->accessToken;
-            return response()->json(['token' => $token], 200);
-
-        }else{
-
-            return response()->json(['error' => 'contrasena o usuario incorrecto']);
-
+        if(!$exist_tenant) {
+            return $this->errorResponse('tenant no encontrado', 404);
         }
+
+        if(auth()->attempt($request->only('email', 'password'))) {
+            $token = auth()->user()->createToken('Token')->accessToken;
+            return $this->successResponse(['user' => auth()->user(), 'token' => $token]);
+        }
+
+        return $this->errorResponse('credenciales invalidas', 401);
+
+    }
+
+    public function refresh( ){
+        $user = auth()->user();
+        $user->token()->revoke();
+        $token = $user->createToken('Token')->accessToken;
+        return $this->successResponse(['user' => $user, 'token' => $token]);
     }
 
     public function logout()
@@ -52,6 +63,6 @@ class AuthController extends Controller
 
         $token->revoke();
 
-        return response()->json(['success' => 'sesion cerrada correctmente']);
+        return $this->successResponse(['message' => 'logout exitoso']);
     }
 }

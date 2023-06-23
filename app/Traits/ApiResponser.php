@@ -27,8 +27,7 @@ trait ApiResponser
             return $this->successResponse($collection, $code);
         }
         $collection = $this->paginate($collection);
-        $collection = $this->cacheResponse($collection);
-
+//        $collection = $this->cacheResponse($collection);
 
         return $this->successResponse($collection, $code);
     }

@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\v1\Landlord;
 
 use App\Http\Controllers\ApiController;
+use App\Http\Requests\Landlord\LoginRequest;
 use App\Http\Requests\Landlord\RegisterRequest;
 use App\Models\Landlord\Tenant;
 use App\Models\Landlord\User;
+use App\Models\Tenant\Permission;
+use App\Models\Tenant\Role;
 use App\Models\Tenant\User as TenantUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password;
+use Laravel\Passport\ClientRepository;
 
 class AuthController extends ApiController
 {
@@ -18,12 +21,11 @@ class AuthController extends ApiController
 
         //crear tenant
         $tenant = Tenant::create([
-            'name' => $request->name,
+            'company' => $request->company,
             'email' => $request->email,
-            'tenancy_company' => $request->name,
             'tenancy_domain' => $request->domain,
         ]);
-    
+
         //crear dominio tenant
         $tenant->domains()->create([
             'domain' => $tenant->tenancy_domain,
@@ -31,47 +33,52 @@ class AuthController extends ApiController
 
         //crear usuario tenant en landlord
         $user_landlord =  User::create([
-                    'name' => $request->name,
+                    'name' =>  'admin',
                     'email' => $request->email,
                     'password' => Hash::make($request->password),
                 ]);
-        
-        $tenant->run(function ($user_landlord) {
+
+        $tenant->run(function () use ($user_landlord) {
             //crear usuario tenant
             $user_tenant =  TenantUser::create([
-                'name' => $user_landlord->name,
+                'name' => 'admin',
                 'email' => $user_landlord->email,
-                'password' => Hash::make($user_landlord->password),
+                'password' => $user_landlord->password,
             ]);
+
+            //crear llaves tenant para passport
+            $client = new ClientRepository();
+            $client->createPasswordGrantClient(null, 'tenant client',env('APP_TENANT_URL'));
+            $client->createPersonalAccessClient(null, 'tenant client', env('APP_TENANT_URL'));
+
+            //crear roles tenant
+            // $superAdminRole = Role::create(['name' => 'Super admin']);
+            // $employeeRole = Role::create(['name' => 'Empleados']);
+            // $adminRole = Role::create(['name' => 'Admin']);
+            // //asignar permisos a super admin
+            // $superAdminRole->givePermissionTo(Permission::all());
+            // $user_tenant->syncRoles([$superAdminRole]);
+
         });
 
         return response()->json(
             [
                 'tenant' => $tenant
-            ], 
+            ],
             200
         );
 
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
 
-        $credentials = [
-            'email' => $request->email,
-            'password' => $request->password
-        ];
-
-        if(auth()->attempt($credentials)){
-
+        if(auth()->attempt($request->only('email', 'password'))) {
             $token = auth()->user()->createToken('Token')->accessToken;
             return response()->json(['token' => $token], 200);
-
-        }else{
-
-            return response()->json(['error' => 'contrasena o usuario incorrecto']);
-
         }
+
+        return response()->json(['error' => 'Contraseña o usuario incorrecto']);
 
     }
 

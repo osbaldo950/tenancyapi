@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use App\Traits\ApiResponser;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Str;
 use Throwable;
 use Exception;
 use Illuminate\Database\QueryException;
@@ -79,9 +80,21 @@ class Handler extends ExceptionHandler
                 return $this->errorResponse('No se puede eliminar el recurso porque está relacionado con otro.', 409);
             }
 
-            if($code == 1146){
+            if ($code == 1146) {
                 return $this->errorResponse('No existe la tabla especificada.', 404);
             }
+
+            if ($code == 1062) {
+                return $this->errorResponse('El recurso ya existe.', 409);
+            }
+
+            if ($code == 1048) {
+                $errorMessage = $exception->getMessage();
+                $fieldName = $this->extractFieldNameFromErrorMessage($errorMessage);
+                $fieldName = Str::snake($fieldName);
+                return $this->errorResponse("El campo '$fieldName' es requerido.", 422);
+            }
+
         }
 
         if ($exception instanceof TokenMismatchException) {
@@ -92,6 +105,20 @@ class Handler extends ExceptionHandler
             return parent::render($request, $exception);
         }
 
+        return $this->errorResponse('Falla inesperada.Intentelo más tarde', 500);
+
+    }
+
+    protected function extractFieldNameFromErrorMessage($errorMessage)
+    {
+        $pattern = "/Column '(.*?)'/";
+        preg_match($pattern, $errorMessage, $matches);
+
+        if (isset($matches[1])) {
+            return $matches[1];
+        }
+
+        return 'Campo desconocido';
     }
 
     public function handleException($request, Exception $exception)
