@@ -16,8 +16,7 @@ return new class extends Migration
             $table->string('voucher', 255);
             $table->string('type', 255);
             $table->string('version', 255);
-            $table->string('model_type', 255);
-            $table->integer('model_id');
+            $table->morphs('voucherable');
             $table->dateTime('date_of_cancellation');
             $table->string('UUID', 255);
             $table->date('date');

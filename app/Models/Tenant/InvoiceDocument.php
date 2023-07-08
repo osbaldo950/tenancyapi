@@ -13,4 +13,9 @@ class InvoiceDocument extends Model
     public $timestamps = false;
     public $table = 'invoices_documents';
     protected $guarded = ['id'];
+    //obtener registro al que pertenece el detalle
+    public function invoice()
+    {
+        return $this->belongsTo(Invoice::class);
+    }
 }

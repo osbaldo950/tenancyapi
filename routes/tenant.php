@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\v1\Tenant\AuthController;
 use App\Http\Controllers\v1\Tenant\CompanyController;
+use App\Http\Controllers\v1\Tenant\QuotationController;
 use App\Http\Controllers\v1\Tenant\RoleController;
 use App\Http\Controllers\v1\Tenant\RoleUserController;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +40,8 @@ Route::middleware([
 
         Route::apiResource('roles', RoleController::class);
         Route::apiResource('roles-user', RoleUserController::class);
+
+        Route::apiResource('quotations', QuotationController::class);
     });
 
 });

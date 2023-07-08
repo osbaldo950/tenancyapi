@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('accounts_receivable', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('customer_id');
+            $table->unsignedBigInteger('customer_id');
             $table->date('date');
             $table->decimal('credit_memo', 30, 6);
             $table->text('notes', 500)->nullalble();

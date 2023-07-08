@@ -10,7 +10,16 @@ class AccountReceivableDetails extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    public $timestamps = false;
     public $table = 'accounts_receivable_details';
     protected $guarded = ['id'];
+    //obtener registro al que pertenece el detalle
+    public function accountsReceivable()
+    {
+        return $this->belongsTo(AccountReceivable::class);
+    }
+
+    //obtener factura
+    public function invoice(){
+        return $this->belongsTo(Invoice::class);
+    }
 }

@@ -13,4 +13,14 @@ class CustomerCreditNoteDetails extends Model
     public $timestamps = false;
     public $table = 'customer_credit_note_details';
     protected $guarded = ['id'];
+    //obtener registro al que pertenece el detalle
+    public function customerCreditNote()
+    {
+        return $this->belongsTo(CustomerCreditNote::class);
+    }
+
+    //obtener producto
+    public function productOrService(){
+        return $this->belongsTo(ProductOrService::class);
+    }
 }

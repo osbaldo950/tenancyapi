@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name', 50);
-            $table->string('rfc', 10);
+            $table->string('name', 255);
+            $table->string('rfc', 255);
             $table->string('street', 255);
             $table->string('ext_num', 255);
             $table->string('int_num', 255);

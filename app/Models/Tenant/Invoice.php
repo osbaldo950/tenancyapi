@@ -13,4 +13,14 @@ class Invoice extends Model
     public $timestamps = false;
     public $table = 'invoices';
     protected $guarded = ['id'];
+    //obtener detalles
+    public function invoiceDetails()
+    {
+        return $this->hasMany(InvoiceDetails::class);
+    }
+
+    //obtener cliente
+    public function customer(){
+        return $this->belongsTo(Customer::class);
+    }
 }

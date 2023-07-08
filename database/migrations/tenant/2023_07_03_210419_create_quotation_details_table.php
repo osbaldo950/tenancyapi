@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('quotation_details', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('quotation_id');
-            $table->integer('product_or_service_id');
+            $table->unsignedBigInteger('quotation_id');
+            $table->unsignedBigInteger('product_or_service_id');
             $table->date('date');
             $table->text('description', 500)->nullalble();
             $table->decimal('quantity', 30, 6);

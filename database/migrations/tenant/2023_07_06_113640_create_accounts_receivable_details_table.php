@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('accounts_receivable_details', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('accounts_receivable_id');
+            $table->unsignedBigInteger('accounts_receivable_id');
             $table->date('date');
-            $table->integer('invoice_id');
+            $table->unsignedBigInteger('invoice_id');
             $table->decimal('credit_memo', 30, 6);
             $table->string('UUID_invoice', 255);
             $table->string('currency', 100);

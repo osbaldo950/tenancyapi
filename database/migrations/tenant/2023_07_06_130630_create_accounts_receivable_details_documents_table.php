@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('accounts_receivable_details_documents', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('accounts_receivable_id');
+            $table->unsignedBigInteger('accounts_receivable_id');
             $table->string('UUID', 255);
             $table->softDeletes();
             $table->timestamps();
-            $table->foreign('accounts_receivable_id')->references('id')->on('accounts_receivable');
+            $table->foreign('accounts_receivable_id', 'arid_arddid')->references('id')->on('accounts_receivable');
         });
     }
 

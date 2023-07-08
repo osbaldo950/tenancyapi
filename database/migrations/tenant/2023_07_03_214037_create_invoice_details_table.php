@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('invoice_details', function (Blueprint $table) {
+        Schema::create('invoices_details', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('invoice_id');
-            $table->integer('product_or_service_id');
+            $table->unsignedBigInteger('invoice_id');
+            $table->unsignedBigInteger('product_or_service_id');
             $table->date('date');
             $table->text('description', 500)->nullalble();
             $table->string('quantity', 100);
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->decimal('amount', 30, 6);
             $table->decimal('discount', 30, 6);
             $table->decimal('subtotal', 30, 6);
-            $table->decimal('tax', 10);
+            $table->decimal('tax', 30, 6);
             $table->decimal('iva', 30, 6);
             $table->decimal('retention_iva', 30, 6);
             $table->decimal('retention_isr', 30, 6);

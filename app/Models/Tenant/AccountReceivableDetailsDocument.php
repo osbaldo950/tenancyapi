@@ -13,4 +13,9 @@ class AccountReceivableDetailsDocument extends Model
     public $timestamps = false;
     public $table = 'accounts_receivable_details_documents';
     protected $guarded = ['id'];
+    //obtener registro al que pertenece el detalle
+    public function accountsReceivable()
+    {
+        return $this->belongsTo(AccountReceivable::class);
+    }
 }

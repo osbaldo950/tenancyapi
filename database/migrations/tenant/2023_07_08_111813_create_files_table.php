@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('invoices_documents', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('invoice_id');
-            $table->string('UUID', 255);
-            $table->softDeletes();
-            $table->foreign('invoice_id')->references('id')->on('invoices');
+        Schema::create('files', function (Blueprint $table) {
+            $table->id();
+            $table->morphs('fileable');
+            $table->string('name')->nullable();
+            $table->string('path');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('invoices_documents');
+        Schema::dropIfExists('files');
     }
 };

@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('customer_credit_note_details', function (Blueprint $table) {
+        Schema::create('customer_credit_notes_details', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('customer_credit_note_id');
-            $table->integer('product_or_service_id');
+            $table->unsignedBigInteger('customer_credit_note_id');
+            $table->unsignedBigInteger('product_or_service_id');
             $table->date('date');
             $table->text('description', 500);
             $table->string('quantity', 25);

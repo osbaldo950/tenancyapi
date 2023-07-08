@@ -11,23 +11,19 @@ class ProductOrService extends Model
     use HasFactory;
     public $table = 'product_or_servises';
     protected $guarded = ['id'];
-    protected $fillable = [
-        'name',
-        'prod_serv_code',
-        'unit_code',
-        'unit',
-        'cost_of_sales',
-        'tax',
-        'ieps_rate',
-        'cost_of_sales',
-        'profit',
-        'subtotal',
-        'iva',
-        'total',
-        'discount',
-        'date_of_last_sale',
-        'price_of_last_sale',
-        'hazardous_product',
-        'description',
-    ];
+    //obtener cotizaciones details
+    public function quotationsDetails()
+    {
+        return $this->hasMany(QuotationDetails::class);
+    }
+    //obtener detalles nota de credito
+    public function customerCreditNoteDetails()
+    {
+        return $this->hasMany(CustomerCreditNoteDetails::class);
+    }
+    //obtener detalles factura
+    public function invoiceDetails()
+    {
+        return $this->hasMany(InvoiceDetails::class);
+    }
 }

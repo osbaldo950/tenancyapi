@@ -10,8 +10,17 @@ class AccountReceivable extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    public $timestamps = false;
     public $table = 'accounts_receivable';
     protected $guarded = ['id'];
+    //obtener detalles
+    public function accountsReceivableDetails()
+    {
+        return $this->hasMany(AccountReceivableDetails::class);
+    }
+
+    //obtener cliente
+    public function customer(){
+        return $this->belongsTo(Customer::class);
+    }
     
 }

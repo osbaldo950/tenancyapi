@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('quotations', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('customer_id');
+            $table->unsignedBigInteger('customer_id');
             $table->date('date');
             $table->decimal('amount', 30, 6);
             $table->decimal('discount', 30, 6);
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->decimal('total', 30, 6);
             $table->decimal('cost', 30, 6);
             $table->text('notes', 500)->nullalble();
-            $table->string('status', 10);
+            $table->string('status', 25);
             $table->text('reason_for_cancellation', 500)->nullalble();
             $table->softDeletes();
             $table->timestamps();

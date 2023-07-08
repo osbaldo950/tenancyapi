@@ -20,7 +20,6 @@ return new class extends Migration
             $table->decimal('cost_of_sales', 30, 6);
             $table->decimal('tax', 30, 6);
             $table->decimal('ieps_rate', 30, 6);
-            $table->decimal('cost_of_sales', 30, 6);
             $table->decimal('profit', 30, 6);
             $table->decimal('subtotal', 30, 6);
             $table->decimal('iva', 30, 6);
