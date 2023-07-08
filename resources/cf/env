@@ -6,7 +6,7 @@ APP_URL=http://localhost
 
 APP_TENANT_URL=facturaya.test 
 
-APP_TENANT_PREFIX=cliente_
+APP_TENANT_PREFIX=facturaya_cliente_
 
 LOG_CHANNEL=stack
 LOG_DEPRECATIONS_CHANNEL=null
