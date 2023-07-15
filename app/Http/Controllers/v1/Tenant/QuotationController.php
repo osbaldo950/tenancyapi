@@ -22,6 +22,7 @@ class QuotationController extends ApiController
 
         // $quotationsDetails = QuotationDetails::find(1);
         // return $quotationsDetails->quotation;
+        
     }
 
     /**
